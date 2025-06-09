@@ -2,8 +2,6 @@ package ru.testEnvironment.customerdissatisfaction;
 
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class CustomerService {
     public static void main(String[] args) {
@@ -19,9 +17,9 @@ public class CustomerService {
         }
 
         int total = 0;
-        List<int[]> goodsList = Collections.singletonList(goods);
+        Arrays.sort(goods);
         for (int buyerId : buyers) {
-            if (goodsList.contains(buyers)) {
+            if (Arrays.binarySearch(goods, buyerId) >= 0) {
                 continue;
             }
             total += findNearest(goods, buyerId);
@@ -30,13 +28,24 @@ public class CustomerService {
         return total;
     }
 
-    private static int findNearest(int[] array, int value) {
-        int minDiff = Math.abs(value - array[0]);
+    private static int findNearest(int[] sortedArray, int value) {
+        int left = 0;
+        int right = sortedArray.length - 1;
+        int minDiff = Math.abs(value - sortedArray[0]);
 
-        for (int i = 1; i < array.length; i++) {
-            int currentDiff = Math.abs(value - array[i]);
+        //Binary search
+        while (left <= right) {
+            int aroundMid = left + (right - left) / 2;
+            int currentDiff = Math.abs(value - sortedArray[aroundMid]);
+
             if (currentDiff < minDiff) {
                 minDiff = currentDiff;
+            }
+
+            if (sortedArray[aroundMid] < value) {
+                left = aroundMid + 1;
+            } else {
+                right = aroundMid - 1;
             }
         }
 
