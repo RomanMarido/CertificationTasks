@@ -1,4 +1,4 @@
-package ru.testEnvironment.CalculateChamp;
+package ru.testEnvironment.calculatechamp;
 
 import org.junit.Test;
 
